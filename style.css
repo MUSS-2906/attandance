@@ -1,0 +1,105 @@
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f7f6fa; /* Light neutral with touch of pastel */
+  color: #2d2354;      /* Simple dark accent text */
+  margin: 0;
+}
+
+header {
+  background: #44318d;    /* Deep indigo */
+  color: #fff;
+  padding: 24px 0;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(68, 49, 141, 0.10);
+  margin-bottom: 28px;
+}
+
+section {
+  margin: 0 20px 24px 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(68, 49, 141, 0.06);
+  padding: 22px 18px;
+}
+
+/* Summary Section */
+#summary h2 {
+  margin-top: 0;
+  color: #44318d; /* Same as header for consistency */
+}
+#summaryText {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #5e548e; /* Gentle dark pastel */
+}
+
+/* Table */
+#attendanceTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  background: #f7f6fa;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#attendanceTable th, #attendanceTable td {
+  padding: 11px 14px;
+  text-align: left;
+}
+
+#attendanceTable th {
+  background: #e7eafc;   /* Soft pastel blue */
+  color: #44318d;
+  font-weight: 600;
+  border-bottom: 2px solid #b9b7e4; /* Pastel accent */
+}
+
+#attendanceTable tr:nth-child(even) {
+  background: #f4ecfc;
+}
+#attendanceTable tr:hover {
+  background: #e7eafc;
+  transition: background 0.16s;
+}
+
+/* Status colors: subtle, not bold */
+#attendanceTable td.status-present { color: #3ad29f; font-weight: 500; }
+#attendanceTable td.status-absent { color: #ef5050; font-weight: 500; }
+#attendanceTable td.status-leave { color: #f5a623; font-weight: 500; }
+
+/* Buttons: simple, rounded, pastel accent */
+button {
+  background: #e7eafc;
+  color: #44318d;
+  border: none;
+  padding: 10px 22px;
+  margin: 4px 10px 0 0;
+  font-size: 1rem;
+  border-radius: 7px;
+  box-shadow: 0 1px 4px rgba(68, 49, 141, 0.07);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.26s, box-shadow 0.26s;
+}
+
+button:hover {
+  background: #b9b7e4;
+  box-shadow: 0 3px 8px rgba(68, 49, 141, .14);
+}
+
+@media (max-width: 600px) {
+  section {
+    margin: 8px;
+    padding: 12px;
+  }
+  #attendanceTable th, #attendanceTable td {
+    padding: 8px 5px;
+    font-size: 0.97rem;
+  }
+  button {
+    padding: 8px 16px;
+    font-size: 0.97rem;
+  }
+}

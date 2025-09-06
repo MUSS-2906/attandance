@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <title>Attendance Dashboard</title>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>📌 Attendance Dashboard</h1>
+  </header>
+
+  <!-- Summary Section -->
+  <section id="summary">
+    <h2>Today’s Attendance</h2>
+    <p id="summaryText">Loading...</p>
+  </section>
+
+  <!-- Attendance Table -->
+  <section>
+    <h2>Student List</h2>
+    <table id="attendanceTable" border="1" cellpadding="5" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Roll No</th>
+          <th>Name</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="attendanceBody">
+        <!-- Data will be inserted here later using JS -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Buttons -->
+  <section>
+    <button id="pdfBtn">Download PDF</button>
+    <button id="excelBtn">Download Excel</button>
+  </section>
+ <script src="script.js"></script>
+</body>
+</html>
