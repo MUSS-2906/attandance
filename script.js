@@ -8,7 +8,8 @@ async function loadAttendance() {
 
   try {
     // Fetch data from backend with error handling
-    const res = await fetch("/generate_report");
+    // Use relative URL for Replit environment
+    const res = await fetch("./generate_report");
     
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
@@ -130,7 +131,7 @@ function setupForm() {
     }
     
     try {
-      const response = await fetch("/mark_attendance", {
+      const response = await fetch("./mark_attendance", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -186,13 +187,13 @@ document.addEventListener("DOMContentLoaded", function() {
   
   if (excelBtn) {
     excelBtn.addEventListener("click", () => {
-      window.location.href = "/generate_report?export=csv";
+      window.location.href = "./generate_report?export=csv";
     });
   }
   
   if (pdfBtn) {
     pdfBtn.addEventListener("click", () => {
-      window.location.href = "/generate_report?export=pdf";
+      window.location.href = "./generate_report?export=pdf";
     });
   }
 });
