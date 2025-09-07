@@ -47,41 +47,49 @@ def serve_js():
 
 @app.route('/mark_attendance', methods=['POST'])
 def mark_attendance():
-    data = request.get_json()
-    student_id = data.get("student_id")
-    name = data.get("name")
-    status = data.get("status")
-    
-    if not student_id or not status or not name:
-        return jsonify({"error": "student_id, name, and status required"}), 400
-    
-    # Get current timestamp with detailed information
-    now = datetime.now()
-    
-    if student_id not in attendance_db:
-        attendance_db[student_id] = []
-    
-    # Add attendance record with detailed timestamp
-    attendance_db[student_id].append({
-        "date": now.strftime("%Y-%m-%d"),
-        "day": now.strftime("%d"),
-        "month": now.strftime("%m"),
-        "month_name": now.strftime("%B"),
-        "year": now.strftime("%Y"),
-        "time": now.strftime("%H:%M:%S"),
-        "full_timestamp": now.strftime("%Y-%m-%d %H:%M:%S"),
-        "readable_timestamp": now.strftime("%B %d, %Y at %I:%M:%S %p"),
-        "status": status,
-        "name": name,
-        "created_at": now.isoformat(),
-        "updated_at": now.isoformat()
-    })
-    
-    return jsonify({
-        "message": f"Attendance marked for {name} (Roll No: {student_id}) on {now.strftime('%B %d, %Y at %I:%M:%S %p')}", 
-        "status": status,
-        "timestamp": now.strftime("%Y-%m-%d %H:%M:%S")
-    })
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No JSON data received"}), 400
+            
+        student_id = data.get("student_id")
+        name = data.get("name")
+        status = data.get("status")
+        
+        if not student_id or not status or not name:
+            return jsonify({"error": "student_id, name, and status required"}), 400
+        
+        # Get current timestamp with detailed information
+        now = datetime.now()
+        
+        if student_id not in attendance_db:
+            attendance_db[student_id] = []
+        
+        # Add attendance record with detailed timestamp
+        attendance_db[student_id].append({
+            "date": now.strftime("%Y-%m-%d"),
+            "day": now.strftime("%d"),
+            "month": now.strftime("%m"),
+            "month_name": now.strftime("%B"),
+            "year": now.strftime("%Y"),
+            "time": now.strftime("%H:%M:%S"),
+            "full_timestamp": now.strftime("%Y-%m-%d %H:%M:%S"),
+            "readable_timestamp": now.strftime("%B %d, %Y at %I:%M:%S %p"),
+            "status": status,
+            "name": name,
+            "created_at": now.isoformat(),
+            "updated_at": now.isoformat()
+        })
+        
+        return jsonify({
+            "message": f"Attendance marked for {name} (Roll No: {student_id}) on {now.strftime('%B %d, %Y at %I:%M:%S %p')}", 
+            "status": status,
+            "timestamp": now.strftime("%Y-%m-%d %H:%M:%S")
+        })
+        
+    except Exception as e:
+        app.logger.error(f"Error in mark_attendance: {str(e)}")
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
 @app.route('/get_attendance', methods=['GET'])
 def get_attendance():
