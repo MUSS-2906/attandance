@@ -55,19 +55,33 @@ def mark_attendance():
     if not student_id or not status or not name:
         return jsonify({"error": "student_id, name, and status required"}), 400
     
-    date = datetime.now().strftime("%Y-%m-%d")
+    # Get current timestamp with detailed information
+    now = datetime.now()
     
     if student_id not in attendance_db:
         attendance_db[student_id] = []
     
-    # Add attendance record with name
+    # Add attendance record with detailed timestamp
     attendance_db[student_id].append({
-        "date": date, 
+        "date": now.strftime("%Y-%m-%d"),
+        "day": now.strftime("%d"),
+        "month": now.strftime("%m"),
+        "month_name": now.strftime("%B"),
+        "year": now.strftime("%Y"),
+        "time": now.strftime("%H:%M:%S"),
+        "full_timestamp": now.strftime("%Y-%m-%d %H:%M:%S"),
+        "readable_timestamp": now.strftime("%B %d, %Y at %I:%M:%S %p"),
         "status": status,
-        "name": name
+        "name": name,
+        "created_at": now.isoformat(),
+        "updated_at": now.isoformat()
     })
     
-    return jsonify({"message": f"Attendance marked for {name} (Roll No: {student_id})", "status": status})
+    return jsonify({
+        "message": f"Attendance marked for {name} (Roll No: {student_id}) on {now.strftime('%B %d, %Y at %I:%M:%S %p')}", 
+        "status": status,
+        "timestamp": now.strftime("%Y-%m-%d %H:%M:%S")
+    })
 
 @app.route('/get_attendance', methods=['GET'])
 def get_attendance():
@@ -105,10 +119,22 @@ def generate_report():
         csv_file = "attendance_report.csv"
         with open(csv_file, mode="w", newline="") as file:
             writer = csv.writer(file)
-            writer.writerow(["Student ID", "Date", "Status", "Name"])
+            writer.writerow(["Student ID", "Name", "Status", "Date", "Day", "Month", "Month Name", "Year", "Time", "Full Timestamp", "Readable Timestamp"])
             for student_id, records in attendance_db.items():
                 for r in records:
-                    writer.writerow([student_id, r["date"], r["status"], r.get("name", "")])
+                    writer.writerow([
+                        student_id, 
+                        r.get("name", ""), 
+                        r["status"], 
+                        r.get("date", ""),
+                        r.get("day", ""),
+                        r.get("month", ""),
+                        r.get("month_name", ""),
+                        r.get("year", ""),
+                        r.get("time", ""),
+                        r.get("full_timestamp", ""),
+                        r.get("readable_timestamp", "")
+                    ])
         return send_file(csv_file, as_attachment=True)
     
     return jsonify(report_data)
