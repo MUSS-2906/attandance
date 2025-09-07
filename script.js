@@ -1,55 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <title>Attendance Dashboard</title>
+</head>
+<body>
 
-async function loadAttendance() {
-  const summaryText = document.getElementById("summaryText");
-  const tbody = document.getElementById("attendanceBody");
+  <!-- Header -->
+  <header>
+    <h1>📌 Attendance Dashboard</h1>
+  </header>
 
-  // Clear old content
-  summaryText.textContent = "Loading...";
-  tbody.innerHTML = "";
+  <!-- Attendance Input Form -->
+  <section id="attendance-form">
+    <h2>Mark Attendance</h2>
+    <div id="current-datetime">
+      <p><strong>Current Date & Time:</strong> <span id="currentDateTime">Loading...</span></p>
+    </div>
+    <form id="attendanceForm">
+      <div class="form-group">
+        <label for="rollNo">Roll Number:</label>
+        <input type="number" id="rollNo" name="rollNo" required>
+      </div>
+      <div class="form-group">
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" name="studentName" required>
+      </div>
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+          <option value="">Select Status</option>
+          <option value="Present">Present</option>
+          <option value="Absent">Absent</option>
+        </select>
+      </div>
+      <button type="submit">Mark Attendance</button>
+    </form>
+    <div id="message"></div>
+  </section>
 
-  try {
-    // Fetch data from backend
-    const res = await fetch("http://127.0.0.1:5000/generate_report");
-    const data = await res.json();
-    console.log("Backend Response:", data);
+  <!-- Summary Section -->
+  <section id="summary">
+    <h2>Today's Attendance</h2>
+    <p id="summaryText">Loading...</p>
+  </section>
 
-    // Show summary always
-    summaryText.textContent =
-      `${data.report} | Total Students: ${data.total_students} | Present: ${data.present} | Absent: ${data.absent}`;
+  <!-- Attendance Table -->
+  <section>
+    <h2>Student List</h2>
+    <table id="attendanceTable" border="1" cellpadding="5" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Roll No</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Date & Time</th>
+        </tr>
+      </thead>
+      <tbody id="attendanceBody">
+        <!-- Data will be inserted here later using JS -->
+      </tbody>
+    </table>
+  </section>
 
-    // If no student details yet, show a row
-    if (!data.students) {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td colspan="3">⚠️ No detailed student records yet</td>`;
-      tbody.appendChild(tr);
-    } else {
-      // Fill table if detailed data is present
-      for (const studentId in data.students) {
-        data.students[studentId].forEach(record => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${studentId}</td>
-            <td>—</td>
-            <td>${record.status}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-    }
-  } catch (err) {
-    summaryText.textContent = "⚠️ Error fetching data.";
-    console.error(err);
-  }
-}
-
-// Run when page loads
-window.onload = loadAttendance;
-// Handle Download Excel button
-document.getElementById("excelBtn").addEventListener("click", () => {
-  window.location.href = "http://127.0.0.1:5000/generate_report?export=csv";
-});
-
-
-document.getElementById("pdfBtn").addEventListener("click", () => {
-  window.location.href = "http://127.0.0.1:5000/generate_report?export=pdf";
-});
+  <!-- Buttons -->
+  <section>
+    <button id="pdfBtn">Download PDF</button>
+    <button id="excelBtn">Download Excel</button>
+  </section>
+ <script src="script.js"></script>
+</body>
+</html>
