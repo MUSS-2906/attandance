@@ -14,7 +14,17 @@ async function loadAttendance() {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
     
-    const data = await res.json();
+    const responseText = await res.text();
+    console.log("Raw response:", responseText);
+    
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error("JSON parsing error:", parseError);
+      console.error("Response was:", responseText);
+      throw new Error(`Invalid JSON response: ${responseText.substring(0, 100)}...`);
+    }
     console.log("Backend Response:", data);
     
     // Validate data structure
@@ -132,7 +142,17 @@ function setupForm() {
         })
       });
       
-      const result = await response.json();
+      const responseText = await response.text();
+      console.log("Raw response:", responseText);
+      
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("JSON parsing error:", parseError);
+        console.error("Response was:", responseText);
+        throw new Error(`Invalid JSON response: ${responseText.substring(0, 100)}...`);
+      }
       
       if (response.ok) {
         const submissionTime = new Date().toLocaleString('en-US', {
