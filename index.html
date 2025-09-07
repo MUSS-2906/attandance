@@ -12,9 +12,37 @@
     <h1>📌 Attendance Dashboard</h1>
   </header>
 
+  <!-- Attendance Input Form -->
+  <section id="attendance-form">
+    <h2>Mark Attendance</h2>
+    <div id="current-datetime">
+      <p><strong>Current Date & Time:</strong> <span id="currentDateTime">Loading...</span></p>
+    </div>
+    <form id="attendanceForm">
+      <div class="form-group">
+        <label for="rollNo">Roll Number:</label>
+        <input type="number" id="rollNo" name="rollNo" required>
+      </div>
+      <div class="form-group">
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" name="studentName" required>
+      </div>
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+          <option value="">Select Status</option>
+          <option value="Present">Present</option>
+          <option value="Absent">Absent</option>
+        </select>
+      </div>
+      <button type="submit">Mark Attendance</button>
+    </form>
+    <div id="message"></div>
+  </section>
+
   <!-- Summary Section -->
   <section id="summary">
-    <h2>Today’s Attendance</h2>
+    <h2>Today's Attendance</h2>
     <p id="summaryText">Loading...</p>
   </section>
 
@@ -27,6 +55,7 @@
           <th>Roll No</th>
           <th>Name</th>
           <th>Status</th>
+          <th>Date & Time</th>
         </tr>
       </thead>
       <tbody id="attendanceBody">
